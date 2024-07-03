@@ -18,8 +18,8 @@
 
 ## Развернуть локально
 
-Использовал при разработки React + Vite + TypeScript
-Версия NodeJS: v20.11.0
+- Использовал при разработки React + Vite + TypeScript
+- Версия NodeJS: v20.11.0
 
 ```
 git clone https://github.com/nickshefer/select-zennex.git
