@@ -1,0 +1,95 @@
+.select {
+	overflow: hidden;
+	cursor: pointer;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 0.25rem;
+	box-shadow: 0 4px 4px 0 rgba(51, 51, 51, 0.04);
+	transition: all 0.2s ease-in-out;
+	&:hover {
+		box-shadow: 0 4px 16px 0 rgba(51, 51, 51, 0.08);
+	}
+	&.sm {
+		min-height: 40px;
+		font-size: 0.7rem;
+		padding: 0.6rem;
+	}
+	&.md {
+		min-height: 50px;
+		font-size: 0.8rem;
+		padding: 0.8rem;
+	}
+	&.lg {
+		height: 60px;
+		font-size: 1rem;
+		padding: 1rem;
+	}
+	&.light {
+		background: #fff;
+		color: #111;
+	}
+	&.dark {
+		background: #2c2c2c;
+		color: #ffffff;
+	}
+}
+.selectLeft {
+	flex-grow: 1;
+}
+.label {
+	&.light {
+		color: rgba(17, 17, 17, 0.48);
+	}
+	&.dark {
+		color: rgba(255, 255, 255, 0.6);
+	}
+}
+.labelSmall {
+	font-size: 0.8em;
+	line-height: 154%;
+}
+.btn {
+	padding: 0;
+	cursor: pointer;
+	background: none;
+	border: none;
+	opacity: 0.48;
+	transition: all 0.2s ease-in-out;
+	&:hover {
+		opacity: 1;
+	}
+	& img {
+		display: block;
+		width: 100%;
+	}
+}
+
+.reset {
+	margin-right: 0.8em;
+}
+.arrowDown {
+	transform: rotate(180deg);
+}
+
+.output {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+}
+
+.outputItem {
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	& img {
+		display: block;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+	}
+	& span {
+	}
+}

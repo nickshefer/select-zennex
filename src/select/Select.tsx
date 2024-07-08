@@ -1,34 +1,36 @@
 import cs from './select.module.scss'
 import { useEffect, useRef, useState } from 'react'
-import ArrowIcon from './icons/ArrowIcon'
-import ResetIcon from './icons/Reset'
-import SelectedIcon from './icons/SelectedIcon'
+import { SelectContainer } from './selectContainer/SelectContainer'
+import { Dropdown } from './dropdown/Dropdown'
 
-export type SelectOption = {
+export type Size = 'sm' | 'md' | 'lg'
+export type Theme = 'light' | 'dark'
+
+export interface SelectOption {
 	label: string
 	value: string
+	icon?: string
 }
 
-type SelectProps = {
+interface SelectProps {
 	value: SelectOption[]
 	onChange: (value: SelectOption[]) => void
 	multiple?: boolean
 	options: SelectOption[]
 	placeholder?: string
 	label?: string
-	size?: 'sm' | 'md' | 'lg'
-	theme?: 'light' | 'dark'
 	search?: boolean
-
+	size?: Size
+	theme?: Theme
 	className?: HTMLDivElement['className']
 }
 
 export const Select: React.FC<SelectProps> = ({
-	multiple,
+	multiple = false,
 	options,
 	value,
 	onChange,
-	placeholder,
+	placeholder = 'Select one or more items...',
 	label,
 	size = 'lg',
 	theme = 'light',
@@ -36,9 +38,6 @@ export const Select: React.FC<SelectProps> = ({
 	className
 }) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false)
-	const [searchStr, setSearchStr] = useState<string>('')
-	const [filteredOptions, setFilteredOptions] =
-		useState<SelectOption[]>(options)
 
 	const root = useRef<HTMLDivElement>(null)
 
@@ -52,120 +51,30 @@ export const Select: React.FC<SelectProps> = ({
 		return () => document.removeEventListener('click', onClick)
 	}, [])
 
-	const selectOption = (option: SelectOption) => {
-		if (multiple) {
-			if (value.includes(option)) {
-				onChange(value.filter((o) => o !== option))
-			} else {
-				onChange([...value, option])
-			}
-		} else {
-			if (option !== value[0]) onChange([option])
-		}
-	}
-
-	const clickReset: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-		e.stopPropagation()
-		onChange([])
-	}
-
-	const searchOptions = (str: string) => {
-		setSearchStr(str)
-		if (!str) setFilteredOptions(options)
-		setFilteredOptions(
-			options.filter((o) => {
-				if (o.label.toLocaleLowerCase().startsWith(str.toLowerCase())) return o
-			})
-		)
-	}
-
-	const getStringValue = (value: SelectOption[]) => {
-		return value.map((o) => o.label).join(', ')
-	}
-
 	return (
 		<div
 			ref={root}
-			className={[cs.wrapper, cs[`wrapper_${size}`], className].join(' ')}>
-			<div
-				onClick={() => setIsOpen(!isOpen)}
-				className={[
-					cs.select,
-					cs[`select_${size}`],
-					cs[`select_${theme}`]
-				].join(' ')}>
-				<div className={cs.selectLeft}>
-					{label && (
-						<div
-							className={[
-								cs.label,
-								cs[`label_${theme}`],
-								(isOpen || value.length !== 0) && cs.labelSmall
-							].join(' ')}>
-							{label}
-						</div>
-					)}
-					{(isOpen || value.length !== 0) && (
-						<div className={cs.output}>
-							{value.length == 0
-								? placeholder || 'Select one or more items...'
-								: getStringValue(value)}
-						</div>
-					)}
-				</div>
-				{value.length !== 0 && (
-					<button
-						onClick={(e) => clickReset(e)}
-						className={[cs.btn, cs.reset].join(' ')}>
-						<ResetIcon fill={theme} />
-					</button>
-				)}
-				<button
-					className={[cs.btn, isOpen ? cs.arrowUp : cs.arrowDown].join(' ')}>
-					<ArrowIcon fill={theme} />
-				</button>
-			</div>
-
-			<div
-				className={[
-					cs.dropdown,
-					cs[`dropdown_${size}`],
-					cs[`dropdown_${theme}`],
-					isOpen ? cs.open : ''
-				].join(' ')}>
-				{search && (
-					<input
-						value={searchStr}
-						onChange={(e) => searchOptions(e.target.value)}
-						type='text'
-						className={[
-							cs.search,
-							cs[`search_${size}`],
-							cs[`search_${theme}`]
-						].join(' ')}
-						placeholder={'Search...'}
-					/>
-				)}
-				<ul className={cs.options}>
-					{filteredOptions.map((e) => (
-						<li
-							key={e.value}
-							className={[
-								cs.option,
-								cs[`option_${size}`],
-								cs[`option_${theme}`]
-							].join(' ')}
-							onClick={() => selectOption(e)}>
-							<div className={cs.optionLabel}>{e.label}</div>
-							{value.includes(e) && (
-								<div className={cs.optionSelected}>
-									<SelectedIcon fill={theme} />
-								</div>
-							)}
-						</li>
-					))}
-				</ul>
-			</div>
+			className={[cs.wrapper, cs[size], cs[theme], className].join(' ')}>
+			<SelectContainer
+				value={value}
+				isOpen={isOpen}
+				setIsOpen={setIsOpen}
+				placeholder={placeholder}
+				label={label}
+				onChange={onChange}
+				size={size}
+				theme={theme}
+			/>
+			<Dropdown
+				multiple={multiple}
+				search={search}
+				isOpen={isOpen}
+				value={value}
+				onChange={onChange}
+				options={options}
+				size={size}
+				theme={theme}
+			/>
 		</div>
 	)
 }

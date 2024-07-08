@@ -1,5 +1,10 @@
 import { useState } from 'react'
 import { Select, SelectOption } from './select/Select'
+import au from './assets/au.svg'
+import de from './assets/de.svg'
+import gb from './assets/gb.svg'
+import br from './assets/br.svg'
+import ru from './assets/ru.svg'
 
 const colors = [
 	{ label: 'Yellow', value: 'yellow' },
@@ -10,11 +15,11 @@ const colors = [
 ]
 
 const countries = [
-	{ label: 'Russia', value: 'ru' },
-	{ label: 'Australia', value: 'au' },
-	{ label: 'Brasil', value: 'br' },
-	{ label: 'Great Britain', value: 'gb' },
-	{ label: 'Germany', value: 'de' }
+	{ label: 'Russia', value: 'ru', icon: ru },
+	{ label: 'Australia', value: 'au', icon: au },
+	{ label: 'Brasil', value: 'br', icon: br },
+	{ label: 'Great Britain', value: 'gb', icon: gb },
+	{ label: 'Germany', value: 'de', icon: de }
 ]
 
 const genders = [
